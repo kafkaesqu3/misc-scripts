@@ -23,6 +23,7 @@ for ip in $(cat $file | cut -d ":" -f 1 | sort -u | uniq); do
         for dns_entry in $(echo $dns); do
                         echo "$ip:$dns_entry"
         echo "$ip:$cn"
+		done
 
         sleep $((1 + RANDOM % 10))
 done
