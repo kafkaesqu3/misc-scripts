@@ -42,11 +42,21 @@ cat $pth/TCPdetails.gnmap | grep ' 443/open' | cut -d ' ' -f 2 > $pth/HTTPS
 cat $pth/TCPdetails.gnmap | grep ' 8080/open' | cut -d ' ' -f 2 > $pth/HTTP_ALT
 cat $pth/TCPdetails.gnmap | grep ' 8443/open' | cut -d ' ' -f 2 >> $pth/HTTP_ALT
 cat $pth/TCPdetails.gnmap | grep ' 22/open' | cut -d ' ' -f 2 > $pth/SSH
+cat $pth/TCPdetails.gnmap | grep ' 21/open' | cut -d ' ' -f 2 > $pth/FTP
+cat $pth/TCPdetails.gnmap | grep ' 3306/open' | cut -d ' ' -f 2 > $pth/MYSQL
+cat $pth/TCPdetails.gnmap | grep ' 1433/open' | cut -d ' ' -f 2 > $pth/MSSQL
+cat $pth/TCPdetails.gnmap | grep ' 1434/open' | cut -d ' ' -f 2 >> $pth/MSSQL
+cat $pth/TCPdetails.gnmap | grep ' 3389/open' | cut -d ' ' -f 2 > $pth/RDP
+cat $pth/TCPdetails.gnmap | grep ' 5800/open' | cut -d ' ' -f 2 > $pth/VNC
+cat $pth/TCPdetails.gnmap | grep ' 5900/open' | cut -d ' ' -f 2 >> $pth/VNC
+
+
 
 # Nmap - Default UDP scan on live targets
 nmap -sU -PN -T4 --host-timeout 30m -iL $pth/livehosts -oA $pth/UDPdetails
 cat $pth/UDPdetails.gnmap | grep ' 161/open\?\!|' | cut -d ' ' -f 2 > $pth/SNMP
 cat $pth/UDPdetails.gnmap | grep ' 500/open\?\!|' | cut -d ' ' -f 2 > $pth/isakmp
+cat $pth/UDPdetails.gnmap | grep ' 69/open\?\!|' | cut -d ' ' -f 2 > $pth/tftp
 
 # Empty file cleanup
 find $pth -size 0c -type f -exec rm -rf {} \;
