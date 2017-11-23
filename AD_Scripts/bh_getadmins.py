@@ -50,7 +50,7 @@ for user in infile:
     line = line + str(derivitive_results['results'][0]['data'][0]['row'])[1:-1]
     if arguments.verbose: 
         print(line)
-    outfile.write(line)
+    outfile.write(line + '\n')
 
 outfile.write('\n')
 infile.close()
