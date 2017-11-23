@@ -6,7 +6,7 @@ import sys
 def doCurl(statement):
     headers = { "Accept": "application/json; charset=UTF-8",
                 "Content-Type": "application/json",
-                "Authorization": "bmVvNGo6Qmxvb2RIb3VuZA==" }
+                "Authorization": "BASE64 ENCODED USERNAME:PASSWORD" }
     data = {"statements": [{'statement': statement}]}
     url = 'http://localhost:7474/db/data/transaction/commit'
     r = requests.post(url=url,headers=headers,json=data)
