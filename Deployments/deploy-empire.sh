@@ -9,14 +9,15 @@ cd Empire/setup
 
 #!/bin/bash
 
-if [ "$#" -ne 2; then
+if [ "$@" -ne 2 ]; then
 	echo -e "\033[32m [*] Usage: ./get-cert.sh [domain]"
 fi
 domain=$1
 echo -e "\033[32m [*] Installing Letsencrypt certbot"
-echo deb http://ftp.debian.org/debian jessie-backports main >> /etc/apt/sources.list
+apt-get install software-properties-common
+add-apt-repository ppa:certbot/certbot
 apt-get update
-apt-get install -y python-certbot-apache -t jessie-backports
+apt-get install python-certbot-apache
 
 echo -e "\033[32m [*] Building config at /etc/letsencrypt/cli.ini"
 cat << EOF > /etc/letsencrypt/cli.ini
@@ -44,17 +45,22 @@ fi
 
 echo -e "\033[32m [*] Generating resource file"
 
-cat << EOF > /root/empire_$domain.rc
+cat << EOF > /root/improved_empire_$domain.rc
 listeners
 uselistener http
 set Host https://$domain:443
 set CertPath /etc/letsencrypt/live/$domain/
 set Port 443
+set ServerVersion nginx
+set DefaultProfile /search?q=news&go=Search&qs=bs&form=QBRE,/search?q=weather&go=Search&qs=bs&form=QBRE,/search?q=movie%20tickets&go=Search&qs=bs&form=QBRE,/search?q=unit%20conversion&go=Search&qs=bs&form=QBRE,/search?q=bitcoin%eprices&go=Search&qs=bs&form=QBRE,/search?q=current%20weather&go=Search&qs=bs&form=QBRE|Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko|Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8|Cookie:DUP=Q=GjU3nAvlFmEWar0NsbcP3ga&T=273053546&A=2&ID
+
 EOF
 
-echo -e "\033[32m [*] Resource file: /root/empire_$domain.rc"
+echo -e "\033[32m [*] Resource file: /root/improved_empire_$domain.rc"
 
 
-https://
-/admin/get.php,/news.php,/login/process.php|Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0;                               rv:11.0) like Gecko|Host:dkuvz71wmezel.cloudfront.net
-
+set DefaultProfile /admin/get.php|Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0)|Host:d28me7e01rr4iq.cloudfront.net
+set CertPath /etc/letsencrypt/live/maximization.gblunch.com/fullchain.pem
+set Host www.irs.com
+set Port 443
+set ServerVersion nginx
