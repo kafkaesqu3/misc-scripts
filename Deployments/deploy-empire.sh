@@ -19,15 +19,8 @@ add-apt-repository ppa:certbot/certbot
 apt-get update
 apt-get install python-certbot-apache
 
-echo -e "\033[32m [*] Building config at /etc/letsencrypt/cli.ini"
-cat << EOF > /etc/letsencrypt/cli.ini
-text = True
-agree-tos = True
-email = admin@$domain
-webroot-path = /var/www/html
-EOF
 echo -e "\033[32m [*] Requesting certificate"
-certbot --apache -d $domain --config /etc/letsencrypt/cli.ini
+certbot certonly -d $domain --standalone --config /etc/letsencrypt/cli.ini --register-unsafely-without-email --agree-tos
 
 echo -e "\033[32m [*] Stopping apache server"
 service apache2 stop
@@ -45,22 +38,32 @@ fi
 
 echo -e "\033[32m [*] Generating resource file"
 
-cat << EOF > /root/improved_empire_$domain.rc
-listeners
-uselistener http
+cat << EOF > /root/dev.rc
 set Host https://$domain:443
 set CertPath /etc/letsencrypt/live/$domain/
 set Port 443
 set ServerVersion nginx
-set DefaultProfile /search?q=news&go=Search&qs=bs&form=QBRE,/search?q=weather&go=Search&qs=bs&form=QBRE,/search?q=movie%20tickets&go=Search&qs=bs&form=QBRE,/search?q=unit%20conversion&go=Search&qs=bs&form=QBRE,/search?q=bitcoin%eprices&go=Search&qs=bs&form=QBRE,/search?q=current%20weather&go=Search&qs=bs&form=QBRE|Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko|Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8|Cookie:DUP=Q=GjU3nAvlFmEWar0NsbcP3ga&T=273053546&A=2&ID
-
+set DefaultProfile /search?q=news&go=Search&qs=bs&form=QBRE|Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
 EOF
+
+cat << EOF > /root/prod.rc
+set Host https://$domain:443
+set CertPath /etc/letsencrypt/live/$domain/
+set Port 443
+set ServerVersion nginx
+set DefaultProfile /search?q=news&go=Search&qs=bs&form=QBRE|Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko|Accept:text/html,application/xhtml+xml,application/xml
+set DefaultDelay 25
+set DefaultJitter 0.3
+set WorkingHours 08:00-17:00 
+EOF
+
+echo "wget --spider --force-html -r -l2 $url 2>&1 \
+  | grep '^--' | awk '{ print $3 }' \
+  | grep -v '\.\(css\|js\|png\|gif\|jpg\)$'
+"
+
+echo "Dont forget to change the html!"
 
 echo -e "\033[32m [*] Resource file: /root/improved_empire_$domain.rc"
 
-
-set DefaultProfile /admin/get.php|Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0)|Host:d28me7e01rr4iq.cloudfront.net
-set CertPath /etc/letsencrypt/live/maximization.gblunch.com/fullchain.pem
-set Host www.irs.com
-set Port 443
-set ServerVersion nginx
+echo
