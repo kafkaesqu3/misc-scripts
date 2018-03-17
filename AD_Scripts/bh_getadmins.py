@@ -6,7 +6,7 @@ import sys
 def doCurl(statement):
     headers = { "Accept": "application/json; charset=UTF-8",
                 "Content-Type": "application/json",
-                "Authorization": "BASE64 ENCODED USERNAME:PASSWORD" }
+                "Authorization": "bmVvNGo6Qmxvb2RIb3VuZA==" }
     data = {"statements": [{'statement': statement}]}
     url = 'http://localhost:7474/db/data/transaction/commit'
     r = requests.post(url=url,headers=headers,json=data)
@@ -42,6 +42,7 @@ for user in infile:
     first_degree_results = json.loads(doCurl(first_degree_query))
     group_delegated_results = json.loads(doCurl(group_delegated_query))
     derivitive_results = json.loads(doCurl(derivitive_query))
+
     line = user.rstrip('\n') + ","
     line = line + str(first_degree_results['results'][0]['data'][0]['row'])[1:-1]
     line = line + ","
