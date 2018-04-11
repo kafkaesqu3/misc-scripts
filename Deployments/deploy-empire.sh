@@ -1,3 +1,5 @@
+#!/bin/bash
+
 apt-get update
 apt-get -y install git build-essential python2.7 python2.7-dev python-pip libssl1.1 libssl-dev
 git clone https://github.com/EmpireProject/Empire
@@ -7,7 +9,7 @@ source ~/.bashrc
 cd Empire/setup
 ./install.sh
 
-#!/bin/bash
+wget https://github.com/PowerShell/PowerShell/releases/download/v6.0.0-rc.2/powershell_6.0.0-rc.2-1.ubuntu.16.04_amd64.deb
 
 if [ "$@" -ne 2 ]; then
 	echo -e "\033[32m [*] Usage: ./get-cert.sh [domain]"
@@ -57,10 +59,3 @@ set DefaultProfile /search?q=news&go=Search&qs=bs&form=QBRE,/search?q=weather&go
 EOF
 
 echo -e "\033[32m [*] Resource file: /root/improved_empire_$domain.rc"
-
-
-set DefaultProfile /admin/get.php|Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0)|Host:d28me7e01rr4iq.cloudfront.net
-set CertPath /etc/letsencrypt/live/maximization.gblunch.com/fullchain.pem
-set Host www.irs.com
-set Port 443
-set ServerVersion nginx
