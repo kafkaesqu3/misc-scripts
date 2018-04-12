@@ -1,73 +1,52 @@
-$interval=-5
+param([Int32]$interval=-5)
 
-Function Invoke-LogHarvest
-[cmdletbinding()]
-Param (
-[string]$Provider,
-[int]$EventId
-   )
-# End of Parameters
-Process {
-$results = Get-WinEvent -FilterHashTable @{Id=$EventId; LogName=$Provider; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-return $results
-} # End of Process
+if ($interval -gt 0) {
+	$interval = $interval * -1
+}
 
+$returned = New-Object -TypeName 'System.Collections.ArrayList';
 
-'Microsoft-Windows-Sysmon/Operational'
+Function Invoke-LogHarvest ([string]$Provider, [string]$name, [int]$EventId)
+{
+	if ($PSBoundParameters.ContainsKey('EventId')) {
+		$results = Get-WinEvent -FilterHashTable @{Id=$eventId; LogName=$Provider; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)} -erroraction 'silentlycontinue'
+	}
+	else 
+	{
+		$results = Get-WinEvent -FilterHashTable @{LogName=$Provider; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)} -erroraction 'silentlycontinue'
+	}
+	if ($results.Length -gt 0) {
+		write-host $provider, $name, $results.length
+		$returned.add($name)
+	}
+	return $results
+}
 
-$sysmon_events = Get-WinEvent -FilterHashTable @{LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)} 2>&1 | Out-Null
-$sysmon_events | measure-object
+#SYSMON
+$ProcessCreate = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'ProcessCreate' -eventid 1
+$FileCreateTime = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'FileCreateTime' -eventid 2
+$NetworkConnect = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'NetworkConnect' -eventid 3
+$ProcessTerminate = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'ProcessTerminate' -eventid 5
+$DriverLoad = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'DriverLoad' -eventid 6
+$ImageLoad = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'ImageLoad' -eventid 7
+$CreateRemoteThread = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'CreateRemoteThread' -eventid 8
+$RawAccessRead = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'RawAccessRead' -eventid 9
+$ProcessAccess = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'ProcessAccess' -eventid 10
+$FileCreate = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'FileCreate' -eventid 11
+$RegistryEvent_Add= Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'RegistryEvent_Add' -eventid 12
+$RegistryEvent_Modify= Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'RegistryEvent_Modify' -eventid 13
+$RegistryEvent_Rename = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'RegistryEvent_Rename' -eventid 14
+$FileCreateStreamHash = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'FileCreateStreamHash' -eventid 15
+$PipeEvent_Create = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'PipeEvent_Create' -eventid 17
+$PipeEvent_Connect = Invoke-LogHarvest -provider 'Microsoft-Windows-Sysmon/Operational' -name 'PipeEvent_Connect' -eventid 18
 
-$sysmon_process_create = Get-WinEvent -FilterHashTable @{Id=1; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_process_create | measure-object
+#OTHER
+$security_events = Invoke-LogHarvest -provider 'Security' -name 'security_events'
 
-$sysmon_file_create_time = Get-WinEvent -FilterHashTable @{Id=2; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_file_create_time | measure-object
+$winrm_events = Invoke-LogHarvest -provider 'Microsoft-Windows-WinRM/Operational' -name 'winrm_events'
 
-$sysmon_network_connect = Get-WinEvent -FilterHashTable @{Id=3; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_network_connect | measure-object
+$wmi_events = Invoke-LogHarvest -provider 'Microsoft-Windows-WinRM/Operational' -name 'wmi_events'
 
-$sysmon_process_terminate = Get-WinEvent -FilterHashTable @{Id=5; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_process_terminate | measure-object
+$process_creation_events = Invoke-LogHarvest -provider 'Security' -name 'process_creation_events' -eventid 4688
 
-$sysmons_driver_load = Get-WinEvent -FilterHashTable @{Id=6; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmons_driver_load | measure-object
-
-$sysmon_image_load = Get-WinEvent -FilterHashTable @{Id=7; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_image_load | measure-object
-
-$sysmon_create_remote_thread = Get-WinEvent -FilterHashTable @{Id=8; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_create_remote_thread | measure-object
-
-$sysmon_create_file_create = Get-WinEvent -FilterHashTable @{Id=11; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_create_file_create | measure-object
-
-$sysmon_registry_add_del = Get-WinEvent -FilterHashTable @{Id=12; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_registry_add_del | measure-object
-
-$sysmon_registry_set = Get-WinEvent -FilterHashTable @{Id=13; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_registry_set | measure-object
-
-$sysmon_registry_renamed = Get-WinEvent -FilterHashTable @{Id=14; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_registry_renamed | measure-object
-
-$sysmon_file_stream = Get-WinEvent -FilterHashTable @{Id=15; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_file_stream | measure-object
-
-$sysmon_pipe_create = Get-WinEvent -FilterHashTable @{Id=17; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_pipe_create | measure-object
-
-$sysmon_pipe_connect = Get-WinEvent -FilterHashTable @{Id=18; LogName='Microsoft-Windows-Sysmon/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$sysmon_pipe_connect | measure-object
-
-$security_events = Get-WinEvent -FilterHashTable @{LogName='Security';StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$security_events | measure-object
-
-$winrm_events = Get-WinEvent -FilterHashTable @{LogName='Microsoft-Windows-WinRM/Operational'; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$winrm_events | measure-object
-
-$wmi_events = Get-WinEvent -FilterHashTable @{LogName='Microsoft-Windows-WinRM/Operational';StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$wmi_events | measure-object
-
-$process_creation_events = Get-Winevent -FilterHashTable @{ID=4688; LogName='Security';StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)}
-$process_creation_events | measure-object
+write-host DONE! $returned
