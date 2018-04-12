@@ -45,7 +45,9 @@ $security_events = Invoke-LogHarvest -provider 'Security' -name 'security_events
 
 $winrm_events = Invoke-LogHarvest -provider 'Microsoft-Windows-WinRM/Operational' -name 'winrm_events'
 
-$wmi_events = Invoke-LogHarvest -provider 'Microsoft-Windows-WinRM/Operational' -name 'wmi_events'
+$wmi_events = Invoke-LogHarvest -provider 'Microsoft-Windows-Wmi-Activity/Operational' -name 'wmi_events'
+
+$powershell_events = Invoke-LogHarvest -provider 'Microsoft-Windows-PowerShell/Operational' -name "powershell_events"
 
 $process_creation_events = Invoke-LogHarvest -provider 'Security' -name 'process_creation_events' -eventid 4688
 
