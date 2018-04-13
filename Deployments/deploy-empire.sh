@@ -1,3 +1,5 @@
+#!/bin/bash
+
 apt-get update
 apt-get -y install git build-essential python python2.7 python2.7-dev python-pip libssl-dev
 git clone https://github.com/EmpireProject/Empire
@@ -7,7 +9,7 @@ source ~/.bashrc
 cd Empire/setup
 ./install.sh
 
-#!/bin/bash
+wget https://github.com/PowerShell/PowerShell/releases/download/v6.0.0-rc.2/powershell_6.0.0-rc.2-1.ubuntu.16.04_amd64.deb
 
 if [ "$@" -ne 2 ]; then
 	echo -e "\033[32m [*] Usage: ./get-cert.sh [domain]"
@@ -57,6 +59,7 @@ set DefaultJitter 0.3
 set WorkingHours 08:00-17:00 
 EOF
 
+echo -e "\033[32m [*] Resource file: /root/improved_empire_$domain.rc"
 echo "wget --spider --force-html -r -l2 $url 2>&1 \
   | grep '^--' | awk '{ print $3 }' \
   | grep -v '\.\(css\|js\|png\|gif\|jpg\)$'
@@ -64,3 +67,5 @@ echo "wget --spider --force-html -r -l2 $url 2>&1 \
 
 echo "Dont forget to change the html base!"
 echo "Good luck"
+echo "Dont forget to change the html!"
+
