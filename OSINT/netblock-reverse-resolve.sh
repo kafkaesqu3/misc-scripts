@@ -1,0 +1,1 @@
+for range in $(cat potential-netblocks); do dnsrecon -r $range -t rvl >> out2.txt; done
