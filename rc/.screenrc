@@ -1,0 +1,7 @@
+termcapinfo xterm* ti@:te@
+startup_message off
+vbell off
+bell_msg 'Bell in window %n^G'
+defscrollback 500
+hardstatus off
+altscreen on
