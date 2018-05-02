@@ -5,7 +5,8 @@ argparser = argparse.ArgumentParser()
 
 argparser.add_argument('--input', help="input file containing usernames", required=False)
 argparser.add_argument('-g', '--groups', action='store_true', help="unrolled group memberships for input object(s)")
-argparser.add_argument('-a', '--admin', action='store_true', help="derivitive local admin rights for input object(s)")
+argparser.add_argument('-a', '--admin', action='store_true', help="group delegated local admin")
+argparser.add_argument('-d', '--derivadmin', action='store_true', help="derivitive local admin rights for input object(s)")
 #argparser.add_argument('-o', '--outbound', action='store_true', help="outbound ACLs for input object(s)")
 #argparser.add_argument('-i', '--inbound', action='store_true', help="inbound ACLs for input object(s)")
 argparser.add_argument('-s', '--sessions', action='store_true', help="sessions for input object(s)")
@@ -30,6 +31,8 @@ if arguments.groups:
     queryType = "groups"
 if arguments.admin: 
     queryType = "admin"
+if arguments.derivadmin:
+	queryType = "deriv-admin"
 if arguments.sessions: 
     queryType = "sessions"
 
