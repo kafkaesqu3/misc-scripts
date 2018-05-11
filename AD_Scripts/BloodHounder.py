@@ -5,6 +5,7 @@ argparser = argparse.ArgumentParser()
 
 argparser.add_argument('--input', help="input file containing usernames", required=False)
 argparser.add_argument('-g', '--groups', action='store_true', help="unrolled group memberships for input object(s)")
+argparser.add_argument('-m', '--groupmembers', action='store_true', help="get group members")
 argparser.add_argument('-a', '--admin', action='store_true', help="group delegated local admin")
 argparser.add_argument('-d', '--derivadmin', action='store_true', help="derivitive local admin rights for input object(s)")
 #argparser.add_argument('-o', '--outbound', action='store_true', help="outbound ACLs for input object(s)")
@@ -35,6 +36,8 @@ if arguments.derivadmin:
 	queryType = "deriv-admin"
 if arguments.sessions: 
     queryType = "sessions"
+if arguments.groupmembers:
+    queryType = "groupmembers"
 
 
 results = BHQuery().runQuery(queryType, arguments.object)

@@ -26,6 +26,8 @@ class BHQuery():
 
             if queryType == "groups": 
                 query = "MATCH p = (n:User {name:'%s'})-[r:MemberOf*1..]->(g:Group) RETURN g.name" % object
+            elif queryType == "groupmembers":
+                query = "MATCH p = (n)-[r:MemberOf*1..]->(g:Group {name:'%s'}) RETURN n.name" % object
             elif queryType == "deriv-admin": 
                 query = "MATCH (c:Computer) WHERE NOT c.name='%s' WITH c MATCH p = shortestPath((n:User {name:'%s'})-[r:HasSession|AdminTo|MemberOf*1..]->(c)) RETURN c.name" % (object, object)
             elif queryType == "admin":

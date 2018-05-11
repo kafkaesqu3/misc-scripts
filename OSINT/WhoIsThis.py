@@ -14,7 +14,7 @@ import sys
 print(['IP Address', 'Country', 'State', 'City', 'Description', 'Name', 'Emails', 'Range'])
 
 try:
-    fileOpen = open('22', 'r')
+    fileOpen = open('tmp', 'r')
     #fileOpen = open(arguments.input, 'r')
     lines = fileOpen.read().strip().split()
 
@@ -25,10 +25,10 @@ try:
         row.append(ip)
         row.append(out['asn_registry'])
         row.append(out['asn_cidr'])
-        row.append(out["nets"][-1]['city'])
-        row.append(out["nets"][-1]['name'])
-        row.append(out["nets"][-1]['description'])
-        row.append(out["nets"][-1]['tech_emails'])
+        row.append(out["nets"][0]['city'])
+        row.append(out["nets"][0]['name'])
+        row.append(out["nets"][0]['description'])
+        row.append(out["nets"][0]['tech_emails'])
 
         if len(out["nets"]) > 1:
             print("HAS PARENT")
