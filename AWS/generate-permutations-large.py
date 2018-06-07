@@ -1,7 +1,7 @@
 import sys
 target = sys.argv[1]
 
-s3_url = "s3.amazonaws.com"
+s3url = "s3.amazonaws.com"
 
 permutations = [
 "%s-0.%s",
@@ -28967,4 +28967,4 @@ permutations = [
 
 
 for permutation in permutations:
-	print permutation % (target, s3_url)
+	print permutation % (target, s3url)
