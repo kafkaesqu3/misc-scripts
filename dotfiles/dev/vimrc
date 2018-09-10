@@ -1,0 +1,118 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+
+" let Vundle manage Vundle, required
+" git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" vim +BundleInstall +qall
+Plugin 'Valloric/YouCompleteMe'
+
+Plugin 'Chiel92/vim-autoformat'     " call with :Autoformat <Lang>
+
+" vim-surround
+" mkdir -p ~/.vim/pack/tpope/start
+" cd ~/.vim/pack/tpope/start
+" git clone https://tpope.io/vim/surround.git
+" vim -u NONE -c \"helptags surround/doc\" -c q
+" cs <find> <replace> 
+" cs"' to replace surrounding " with '
+"
+" auto-pairs
+" mkdir ~/.vim/plugins
+" curl https://github.com/jiangmiao/auto-pairs/blob/master/plugin/auto-pairs.vim > ~/.vim/plugins/auto-pairs.vim
+" this plugin sux
+
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'rdnetto/YCM-Generator'
+call vundle#end()            " required
+
+
+
+" Powerline options
+set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
+
+" Always show statusline
+set laststatus=2
+
+" Use 256 colours (Use this setting only if your terminal supports 256 colours)
+set t_Co=256
+
+" VIM OPTIONS
+set wildmenu			" Better command-line completion
+set clipboard=unnamedplus " use system clipboard
+							" may require install the packages vim-gtk or vim-gnome
+							" may also require x11 server in using putty
+" NAVIGATION
+set whichwrap+=<,>,h,l,[,] 	" enables line wrapping via left/right keys at end of a line
+
+" COLORS/HIGHLIGHTIHNG
+syntax on	           	" enable syntax processing
+set cursorline          	" highlight current line
+set showmatch           	" highlight matching [{()}]
+colorscheme delek           " overall color scheme
+set background=dark         " fixes some horrible bright on bright colors
+
+" FORMATTING
+set wrap			" long lines wrap to next line
+set number          " show line numbers
+set autoindent      
+set smartindent
+
+" Dont expand tabs in makefiles. iz bad
+let _curfile = expand("%:t")
+if _curfile =~ "Makefile" || _curfile =~ "makefile" || _curfile =~ ".*\.mk"
+    set noexpandtab
+else
+    set expandtab    " on pressing tab, insert 4 spaces
+    set tabstop=4    " number of visual spaces per TAB
+    set shiftwidth=4 " sets tabs for tab/auto indentation
+    set softtabstop=4 "untabs lines when deleting, instead of just deleting a single space
+
+endif
+
+" SEARCH
+"set incsearch           	" search as characters are entered
+set hlsearch            	" highlight matches
+" set ignorecase
+set smartcase			" searches all in lowercase become case insensitive
+
+" PERFORMANCE
+set lazyredraw
+
+" OTHER
+set mouse=a				" this lets me scroll from putty while in GNU screen
+
+" KEY MAPPINGS
+" we don't want Del key to yank when in visual mode
+vnoremap <del> "_x
+
+" lets you use the tab key normally when the cursor is at the beginning of a line or not on a word, otherwise runs omnicomplete
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+
+" YCM options
+let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
+filetype plugin on                      " enable omnicomplete
+set omnifunc=syntaxcomplete#Complete    " enable omnicomplete
+filetype plugin indent on               " required
+" set colors of errors/warnings
+highlight YcmErrorSection ctermbg=DarkMagenta
+highlight YcmWarningSection ctermbg=DarkYellow
+" disables the gutter signs
+let g:ycm_enable_diagnostic_signs = 0
+
+" Gutentags options                 https://bolt80.com/gutentags/
+set statusline+=%{gutentags#statusline()}    " update statusline when generating ctags
