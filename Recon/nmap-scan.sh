@@ -4,7 +4,7 @@ pth=`pwd`
 # PORT SCANNING
 
 # Nmap - Full TCP SYN scan on live targets
-nmap -sS -PN -O -sV -T4 -p- --host-timeout 90m -iL $pth/livehosts -oA $pth/TCPdetails
+nmap -sS -PN -O -sV -T4 -p- --host-timeout 90m -iL $pth/livehosts -oA $pth/TCPdetails --randomize-hosts --source-port 53
 cat $pth/TCPdetails.gnmap | grep ' 25/open' | cut -d ' ' -f 2 > $pth/SMTP
 cat $pth/TCPdetails.gnmap | grep ' 53/open' | cut -d ' ' -f 2 > $pth/DNS
 cat $pth/TCPdetails.gnmap | grep ' 23/open' | cut -d ' ' -f 2 > $pth/telnet
