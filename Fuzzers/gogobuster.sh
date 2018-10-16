@@ -33,7 +33,8 @@ if [ -z "threads" ]
 fi
 
 for url in $(cat $input); do
-	output_file=$(echo $url | cut -d'/' -f3 | cut -d':' -f1)
-	command="gobuster -m dir -e -l -k -u $url -w $dictionary -o $output_directory/${output_file}_out"
+	for i in $(seq 1 $threads); do
+		output_file=$(echo $url | cut -d'/' -f3 | cut -d':' -f1)
+		command="gobuster -m dir -e -l -k -u $url -w $dictionary -o $output_directory/${output_file}_out"
 	$(command)
 done; 
