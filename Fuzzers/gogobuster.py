@@ -21,14 +21,10 @@ import re
 import sys
 
 def runCommand(command):
-    subprocess.call(command.split(' '))
-
-
-def pool_function(command):
-    try:
-        return runCommand(command)
-    except KeyboardInterrupt:
-        return 'KeyboardException'
+    try: 
+        subprocess.call(command)
+    except KeyboardInterrupt, e:
+        pass
 
 def main(): 
     argparser = argparse.ArgumentParser()
@@ -41,28 +37,34 @@ def main():
     file = arguments.file
     targets = open(file).read().splitlines()
 
-    wordlist = arguments.wordlist
+    wordlist = 'test'
     output_folder = arguments.output
 
+    # Gobuster uses 10 threads by default, 
     if arguments.threads is None: 
         thread_count = 2
     else: 
         thread_count = arguments.threads
-
+        if thread_count > 4: 
+            print("WARNING: Gobuster runs with 10 threads; you're about to run {0}*10={1} threads\n".format(thread_count, 10*thread_count))
+            print("That's a lot of threads, be careful!\n")
+            input("Press Enter to continue, press Ctrl-C to cancel")
     pool = multiprocessing.Pool(thread_count)
+    
+    for url in targets: 
 
-    try:
-        jobs = []
-        for url in targets: 
-            output_file = re.sub(r"https?://", '', url)
-            command = "gobuster -m dir -e -l -k -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
+        # no slashes in our output file name!
+        output_file = re.sub(r"https?://", '', url)
+        command = "gobuster -m dir -e -l -k -fw -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
 
-            jobs.append(pool.apply_async(pool_function, args=([command])))
-        pool.close()
-        pool.join()
-    except KeyboardInterrupt:
-        print 'parent received control-c'
-        pool.terminate()
+        #map_asyc will only take a single argument, so we must pass it a list. subprocess requires a list too so this is no problem
+        p = pool.map_async(runCommand, [command.split(' ')])
+
+    try: 
+        results = p.get()
+    except KeyboardInterrupt: 
+        print('Received control-c, cya!')
+        sys.exit()
 
 if __name__ == "__main__":
     main()
