@@ -34,10 +34,9 @@ def main():
     argparser.add_argument("-t", "--threads", type=int, help="# of threads (concurrent URLs to be scanned)", required=False)
     arguments = argparser.parse_args()
 
-    file = arguments.file
-    targets = open(file).read().splitlines()
+    targets = open(arguments.file).read().splitlines()
 
-    wordlist = 'test'
+    wordlist = arguments.wordlist
     output_folder = arguments.output
 
     # Gobuster uses 10 threads by default, 
