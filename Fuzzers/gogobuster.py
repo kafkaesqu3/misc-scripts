@@ -55,7 +55,7 @@ def main():
 
         # no slashes in our output file name!
         output_file = re.sub(r"https?://", '', url)
-        command = "gobuster -m dir -e -l -k -fw -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
+        command = "gobuster -m dir -e -l -k -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
 
         #map_asyc will only take a single argument, so we must pass it a list. subprocess requires a list too so this is no problem
         p = pool.map_async(runCommand, [command.split(' ')])
