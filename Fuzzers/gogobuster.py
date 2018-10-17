@@ -34,7 +34,7 @@ wordlist = arguments.wordlist
 output_folder = arguments.output
 
 if arguments.threads is None: 
-    thread_count = 5
+    thread_count = 2
 else: 
     thread_count = arguments.threads
 
