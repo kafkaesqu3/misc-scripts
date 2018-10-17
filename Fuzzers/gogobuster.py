@@ -62,4 +62,4 @@ for url in targets:
 # when the queue is empty, we're done
 print('Thread waiting...')
 command_queue.join()
-print('Done!)
+print('Done!')
