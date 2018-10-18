@@ -6,18 +6,18 @@
 " git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 " infect file for easy plugin installation into ~/.vim/bundle
- execute pathogen#infect()
+" execute pathogen#infect()
 
 " required for Vundle
-set nocompatible              " be iMproved, required
-filetype off                  " required
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
+"set nocompatible              " be iMproved, required
+"filetype off                  " required
+"set rtp+=~/.vim/bundle/Vundle.vim
+"call vundle#begin()
+"Plugin 'VundleVim/Vundle.vim'
 " OTHER PLUGINS HERE
-call vundle#end()            " required
-let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-filetype plugin indent on    " required
+"call vundle#end()            " required
+"let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
+"filetype plugin indent on    " required
 
 " automatically close quotes, brackets, parens, etc
 " git clone https://github.com/vim-scripts/delimitMate.vim.git ~/.vim/bundle/delimitMate.vim
@@ -66,6 +66,6 @@ nnoremap <buffer> <F5> :w <bar> exec '!python' shellescape(@%, 1)<cr> "execute p
 " mv PowerlineSymbols.otf ~/.fonts/
 " fc-cache -vf ~/.fonts/
 " mv 10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
-set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
+" set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
 " Always show statusline
-set laststatus=2
+" set laststatus=2

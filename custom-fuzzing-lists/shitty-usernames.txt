@@ -1,0 +1,12 @@
+administrator
+oracle
+mysql
+user
+guest
+apache
+info
+test
+admin
+root
+uploader
+ftp

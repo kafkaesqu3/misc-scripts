@@ -1,11 +1,14 @@
 
 Function Invoke-LogHarvest ([string]$Provider, [string]$name, [int]$EventId)
 {
+		write-host $provider
+
 	if ($PSBoundParameters.ContainsKey('EventId')) {
 		$results = Get-WinEvent -FilterHashTable @{Id=$eventId; LogName=$Provider; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)} -erroraction 'silentlycontinue'
 	}
 	else 
 	{
+		write-host "No id specified!"
 		$results = Get-WinEvent -FilterHashTable @{LogName=$Provider; StartTime=((Get-Date).AddMinutes($interval)); EndTime=(Get-Date)} -erroraction 'silentlycontinue'
 	}
 	if ($results.Length -gt 0) {
@@ -43,6 +46,7 @@ Function Harvest-AllLogs ([int]$interval=-5) {
 
 	#OTHER
 	$global:security_events = Invoke-LogHarvest -provider 'Security' -name 'security_events'
+	$global:system_events = Invoke-LogHarvest -provider 'System' -name 'system_events'
 
 	$global:winrm_events = Invoke-LogHarvest -provider 'Microsoft-Windows-WinRM/Operational' -name 'winrm_events'
 

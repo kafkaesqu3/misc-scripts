@@ -1,37 +1,10 @@
 # Variables - Set these
 pth=`pwd`
-# HOST DISCOVERY
-
-#echo "$pth nmap host discovery has begun" | sendmail "email@email.com"
-
-# Nmap - Pingsweep using ICMP echo
-nmap -sP -PE -iL $pth/targets -oA $pth/icmpecho
-cat $pth/icmpecho.gnmap | grep Up | cut -d ' ' -f 2 > $pth/live
-
-# Nmap - Pingsweep using ICMP timestamp
-nmap -sP -PP -iL $pth/targets -oA $pth/icmptimestamp
-cat $pth/icmptimestamp.gnmap | grep Up | cut -d ' ' -f 2 >> $pth/live
-
-# Nmap - Pingsweep using ICMP netmask
-nmap -sP -PM -iL $pth/targets -oA $pth/icmpnetmask
-cat $pth/icmpnetmask.gnmap | grep Up | cut -d ' ' -f 2 >> $pth/live
-
-# Systems that respond to ping (finding)
-cat $pth/live | sort | uniq > $pth/pingresponse
-
-# Nmap - Pingsweep using TCP SYN and UDP
-nmap -sP -PS21,22,23,25,53,80,88,110,111,135,139,443,445,8080 -iL $pth/targets -oA $pth/pingsweepTCP
-nmap -sP -PU53,111,135,137,161,500 -iL $pth/targets -oA $pth/pingsweepUDP
-cat $pth/pingsweepTCP.gnmap | grep Up | cut -d ' ' -f 2 >> $pth/live
-cat $pth/pingsweepUDP.gnmap | grep Up | cut -d ' ' -f 2 >> $pth/live
-
-# Create unique live hosts file
-cat $pth/live | sort | uniq > $pth/livehosts
 
 # PORT SCANNING
 
 # Nmap - Full TCP SYN scan on live targets
-nmap -sS -PN -O -sV -T4 -p- --host-timeout 90m -iL $pth/livehosts -oA $pth/TCPdetails
+nmap -sS -PN -O -sV -T4 -p- --host-timeout 90m -iL $pth/livehosts -oA $pth/TCPdetails --randomize-hosts --source-port 53
 cat $pth/TCPdetails.gnmap | grep ' 25/open' | cut -d ' ' -f 2 > $pth/SMTP
 cat $pth/TCPdetails.gnmap | grep ' 53/open' | cut -d ' ' -f 2 > $pth/DNS
 cat $pth/TCPdetails.gnmap | grep ' 23/open' | cut -d ' ' -f 2 > $pth/telnet
