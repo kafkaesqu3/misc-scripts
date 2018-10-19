@@ -22,21 +22,32 @@ import sys
 
 def runCommand(command):
     try: 
-        subprocess.call(command)
+        #subprocess.call(command)
+        print(command)
+
     except KeyboardInterrupt, e:
         pass
 
 def main(): 
     argparser = argparse.ArgumentParser()
     argparser.add_argument("-f", "--file", help="File with target URLs", required=True)
-    argparser.add_argument("-w", "--wordlist", help="Wordlist to use across all URLs", required=True)
+    argparser.add_argument("-w", "--wordlist", help="Wordlist to use across all URLs", required=False)
+    argparser.add_argument("-W", "--wordlist-file", help="Path to file containing 1 path per line of all the wordlists to use", required=False)
     argparser.add_argument("-o", "--output", help="Output directory", required=False)
     argparser.add_argument("-t", "--threads", type=int, help="# of threads (concurrent URLs to be scanned)", required=False)
     arguments = argparser.parse_args()
 
     targets = open(arguments.file).read().splitlines()
+    wordlists = []
+    if arguments.wordlist: 
+        wordlists.append(arguments.wordlist)    
+    elif arguments.wordlist_file: 
+        wordlist_file = open(arguments.wordlist_file).read().splitlines()
+        for wordlist in wordlist_file: 
+            wordlists.append(wordlist)
+    else: 
+        print("You need either a wordlist (-w) or a file containing wordlists (-W)")
 
-    wordlist = arguments.wordlist
     output_folder = arguments.output
 
     # Gobuster uses 10 threads by default, 
@@ -54,7 +65,9 @@ def main():
 
         # no slashes in our output file name!
         output_file = re.sub(r"https?://", '', url)
-        command = "gobuster -m dir -e -l -k -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
+        command = "gobuster -m dir -e -l -k -u {0} -o {2}/{3}_out".format(url, output_folder, output_file)
+
+        #if wordlist: 
 
         #map_asyc will only take a single argument, so we must pass it a list. subprocess requires a list too so this is no problem
         p = pool.map_async(runCommand, [command.split(' ')])
