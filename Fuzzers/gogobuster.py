@@ -23,7 +23,7 @@ import sys
 def runCommand(command):
     try: 
         #subprocess.call(command)
-        print(command)
+        print(' '.join(command))
 
     except KeyboardInterrupt, e:
         pass
@@ -62,15 +62,15 @@ def main():
     pool = multiprocessing.Pool(thread_count)
     
     for url in targets: 
+        for wordlist in wordlists: 
+            # no slashes in our output file name!
+            output_file = re.sub(r"https?://", '', url)
+            command = "gobuster -m dir -e -l -k -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
 
-        # no slashes in our output file name!
-        output_file = re.sub(r"https?://", '', url)
-        command = "gobuster -m dir -e -l -k -u {0} -o {2}/{3}_out".format(url, output_folder, output_file)
+            #if wordlist: 
 
-        #if wordlist: 
-
-        #map_asyc will only take a single argument, so we must pass it a list. subprocess requires a list too so this is no problem
-        p = pool.map_async(runCommand, [command.split(' ')])
+            #map_asyc will only take a single argument, so we must pass it a list. subprocess requires a list too so this is no problem
+            p = pool.map_async(runCommand, [command.split(' ')])
 
     try: 
         results = p.get()
