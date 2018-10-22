@@ -19,24 +19,46 @@ import argparse
 import subprocess
 import re
 import sys
+from random import randint
+from time import sleep
+
+dryrun = False
 
 def runCommand(command):
     try: 
-        subprocess.call(command)
-
+        if dryrun: 
+            print(' '.join(command))
+            sleep(randint(10,20))
+        else: 
+            subprocess.call(command)    
     except KeyboardInterrupt, e:
         pass
 
 def main(): 
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("-f", "--file", help="File with target URLs", required=True)
+    argparser.add_argument("-u", "--url", help="Single target URLs", required=False)
+    argparser.add_argument("-U", "--url-list", help="File with all URLs to test", required=False)
     argparser.add_argument("-w", "--wordlist", help="Wordlist to use across all URLs", required=False)
     argparser.add_argument("-W", "--wordlist-file", help="Path to file containing 1 path per line of all the wordlists to use", required=False)
     argparser.add_argument("-o", "--output", help="Output directory", required=False)
     argparser.add_argument("-t", "--threads", type=int, help="# of threads (concurrent URLs to be scanned)", required=False)
+    argparser.add_argument("-d", "--dryrun", action='store_true', help="Print gobuster commands that will be run, but do not execute", required=False)
     arguments = argparser.parse_args()
 
-    targets = open(arguments.file).read().splitlines()
+    global dryrun
+    dryrun = arguments.dryrun
+    
+    targets = []
+    if arguments.url: 
+        targets.append(arguments.url)    
+    elif arguments.url_list: 
+        targets_file = open(arguments.url_list).read().splitlines()
+        for target in targets_file: 
+            targets.append(target)
+    else: 
+        print("You need either a single URL (-u) or a file containing URLs (-U)")    
+
+
     wordlists = []
     if arguments.wordlist: 
         wordlists.append(arguments.wordlist)    
@@ -59,23 +81,25 @@ def main():
             print("That's a lot of threads, be careful!\n")
             input("Press Enter to continue, press Ctrl-C to cancel")
     pool = multiprocessing.Pool(thread_count)
-    
-    for url in targets: 
-        for wordlist in wordlists: 
-            # no slashes in our output file name!
-            output_file = re.sub(r"https?://", '', url)
-            command = "gobuster -m dir -e -l -k -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
-
-            #if wordlist: 
-
-            #map_asyc will only take a single argument, so we must pass it a list. subprocess requires a list too so this is no problem
-            p = pool.map_async(runCommand, [command.split(' ')])
-
     try: 
-        results = p.get()
+        for url in targets: 
+            if not url: continue
+            for wordlist in wordlists: 
+                if not wordlist: continue
+                # no slashes in our output file name!
+                output_file = re.sub(r"https?://", '', url)
+                if output_file[-1] == "/": 
+                    output_file = output_file[:-1]
+                command = "gobuster -m dir -e -l -k -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
+
+                #map_asyc will only take a single argument, so we must pass it a list. subprocess requires a list too so this is no problem
+                p = pool.map_async(runCommand, [command.split(' ')])
+
+        
+            results = p.get()
     except KeyboardInterrupt: 
         print('Received control-c, cya!')
-        sys.exit()
+        return
 
 if __name__ == "__main__":
     main()
