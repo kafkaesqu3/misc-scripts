@@ -22,8 +22,7 @@ import sys
 
 def runCommand(command):
     try: 
-        #subprocess.call(command)
-        print(' '.join(command))
+        subprocess.call(command)
 
     except KeyboardInterrupt, e:
         pass
