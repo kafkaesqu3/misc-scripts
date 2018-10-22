@@ -1,0 +1,6 @@
+/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Database/inc.txt
+/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Database/ini.txt
+/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Database/mdb.txt
+/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Database/mdf.txt
+/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Database/sql.txt
+/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Database/xml.txt
