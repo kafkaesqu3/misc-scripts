@@ -1,6 +1,0 @@
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Project/csproj.txt
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Project/pdb.txt
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Project/resx.txt
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Project/sln.txt
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Project/suo.txt
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Project/vbproj.txt

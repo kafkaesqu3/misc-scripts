@@ -1,4 +1,0 @@
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Conf/config.txt
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Conf/conf.txt
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Conf/htaccess.txt
-/mnt/hgfs/Scripts/misc-scripts/custom-fuzzing-lists/filepaths/svn-digger/cat/Conf/properties.txt
