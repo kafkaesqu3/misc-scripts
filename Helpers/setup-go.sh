@@ -4,5 +4,9 @@ mv go /usr/local
 
 cat << EOF >> ~/.bashrc
 export GOPATH=$HOME/go
+EOF
+source ~/.bashrc
+cat << EOF >> ~/.bashrc
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 EOF
+source ~/.bashrc
