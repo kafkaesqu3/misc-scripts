@@ -9,8 +9,9 @@ import sys
 
 # define where our data is inside the csv file
 ip_column_no=0
-proto_port_column_no = 1
-title_column_no = 2 
+proto_column_no = 1
+port_column_no = 2
+title_column_no = 3
 
 # returns a dict, where the key is the title
 # the value of each dict is a list of tuples
@@ -22,13 +23,20 @@ def parse_location_data(data):
     for line in data: 
         title = line[title_column_no]
         ip_address = line[ip_column_no]
-        try: 
-            port = int(line[proto_port_column_no].split('/')[0])
-        except: 
-            print("Some of these ports arent numbers. Check your dataset; it may not be what is expected")
-            sys.exit()
-        proto = line[proto_port_column_no].split('/')[1]         
-        data = tuple([ip_address, proto, port])
+        port = int(line[port_column_no])
+        if port != 0: 
+            proto_port = " [" + line[proto_column_no] + "/" + str(port) + "]"
+        else: 
+            proto_port = ""
+        # try: 
+        #     port = int(line[proto_port_column_no].split('/')[0])
+        # except: 
+        #     print("Some of these ports arent numbers. Check your dataset; it may not be what is expected")
+        #     sys.exit()
+        #proto = line[proto_port_column_no].split('/')[1]         
+        #data = tuple([ip_address, proto, port])
+        data = tuple([ip_address, proto_port])
+
 
         if title in parsed_data: 
             parsed_data[title].append(data)
@@ -113,12 +121,13 @@ def main ():
                 locations_raw = parsed_data[title]
                 for location in locations_raw: 
                     ip_address = location[0]
-                    protocol = location[1].upper()
-                    port = location[2]
-                    if port == 0: 
-                        output.write("{0}{1}\n".format(list_markup, ip_address))
-                    else: 
-                        output.write("{0}{1} [{2}/{3}]\n".format(list_markup, ip_address, protocol, port))
+                    #protocol = location[1].upper()
+                    #port = location[2]
+                    proto_port = location[1].upper()
+                    #if port == 0: 
+                    #    output.write("{0}{1}\n".format(list_markup, ip_address))
+                    #else: 
+                    output.write("{0}{1}{2}\n".format(list_markup, ip_address, proto_port))
                 output.write('\n\n')
 
 if __name__ == "__main__":
