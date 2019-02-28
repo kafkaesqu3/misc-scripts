@@ -13,7 +13,7 @@ cat $pth/TCPdetails.gnmap | grep ' 139/open' | cut -d ' ' -f 2 > $pth/netbios
 cat $pth/TCPdetails.gnmap | grep ' 80/open' | cut -d ' ' -f 2 > $pth/HTTP
 cat $pth/TCPdetails.gnmap | grep ' 443/open' | cut -d ' ' -f 2 > $pth/HTTPS
 cat $pth/TCPdetails.gnmap | grep ' 8080/open' | cut -d ' ' -f 2 > $pth/HTTP_ALT
-cat $pth/TCPdetails.gnmap | grep ' 8443/open' | cut -d ' ' -f 2 >> $pth/HTTP_ALT
+cat $pth/TCPdetails.gnmap | grep ' 8443/open' | cut -d ' ' -f 2 > $pth/HTTPS_ALT
 cat $pth/TCPdetails.gnmap | grep ' 22/open' | cut -d ' ' -f 2 > $pth/SSH
 cat $pth/TCPdetails.gnmap | grep ' 21/open' | cut -d ' ' -f 2 > $pth/FTP
 cat $pth/TCPdetails.gnmap | grep ' 3306/open' | cut -d ' ' -f 2 > $pth/MYSQL
