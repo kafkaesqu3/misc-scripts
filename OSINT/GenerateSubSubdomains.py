@@ -24,3 +24,16 @@ def subdomain_generator(n):
 
 subdomain_generator(arguments.length)
 
+"""
+name[suffix]
+name-[suffix]
+
+"""
+# old
+# tmp
+# temp
+# stg
+# na
+# eu
+
+# option to add 1-9 to each value in wordlist

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # thanks https://github.com/laconicwolf/Nmap-Scan-to-CSV
+# Usage example: python3 nmap-parse-xml-tocsv.py -csv office-tcp.csv -f office-portscan.xml
 
 __author__ = 'Jake Miller (@LaconicWolf)'
 __date__ = '20171220'

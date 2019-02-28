@@ -84,12 +84,13 @@ def main():
     try: 
         for url in targets: 
             if not url: continue
+            # remove slashes from the end of URLs
+            if url[-1] == "/": url=url[:-1]
             for wordlist in wordlists: 
                 if not wordlist: continue
                 # no slashes in our output file name!
                 output_file = re.sub(r"https?://", '', url)
-                if output_file[-1] == "/": 
-                    output_file = output_file[:-1]
+                if output_file[-1] == "/": output_file = output_file[:-1]
                 command = "gobuster -m dir -e -l -k -u {0} -w {1} -o {2}/{3}_out".format(url, wordlist, output_folder, output_file)
 
                 #map_asyc will only take a single argument, so we must pass it a list. subprocess requires a list too so this is no problem
