@@ -1,0 +1,3 @@
+# BASH PROMPTS
+# Set bash prompt: username@hostname:path $ -- color RED
+export PS1='\[\e[91m\]\u@\h:\w$ \[\e[0m\]'
