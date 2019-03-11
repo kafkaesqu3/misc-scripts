@@ -28,10 +28,12 @@ class BHQuery():
                 query = "MATCH p = (n:User {name:'%s'})-[r:MemberOf*1..]->(g:Group) RETURN g.name" % object
             elif queryType == "groupmembers":
                 query = "MATCH p = (n)-[r:MemberOf*1..]->(g:Group {name:'%s'}) RETURN n.name" % object
+            elif queryType == "firstdegree_localadmin":
+                query = "MATCH p=(m:Group {name: '%s'})-[r:AdminTo]->(n:Computer) RETURN n.name" % object
+            elif queryType == "groupdelegated_localadmin":
+                query = "MATCH p = (g1:Group {name:'%s'})-[r1:MemberOf*1..]->(g2:Group)-[r2:AdminTo]->(n:Computer) RETURN n.name" % object
             elif queryType == "deriv-admin": 
-                query = "MATCH (c:Computer) WHERE NOT c.name='%s' WITH c MATCH p = shortestPath((n:User {name:'%s'})-[r:HasSession|AdminTo|MemberOf*1..]->(c)) RETURN c.name" % (object, object)
-            elif queryType == "admin":
-                query = "MATCH p=(n:User {name:'%s'})-[r1:MemberOf*1..]->(g:Group)-[r2:AdminTo]->(c:Computer) RETURN c.name" % object
+                query = "MATCH p = shortestPath((g:Group {name:'%s'})-[r:MemberOf|AdminTo|HasSession*1..]->(n:Computer)) RETURN n.name" % object
          #   elif arguments.outbound:
          #       query = "MATCH (n) WHERE NOT n.name='%s' WITH n MATCH p = shortestPath((u:User {name:'%s'})-[r1:MemberOf|AddMembers|AllExtendedRights|ForceChangePassword|GenericAll|GenericWrite|WriteDacl|WriteOwner*1..]->(n)) RETURN p" % object
          #   elif arguments.inbound:
@@ -40,6 +42,7 @@ class BHQuery():
                 query = "MATCH (n:Computer)-[r:HasSession]->(m:User {name:'%s'}) RETURN n.name" % object
             else: 
                 pass
+            print("%s - %s: %s") % (object, queryType, query)
             results = json.loads(self.doCurl(query))['results'][0]['data']
             results_return = []
             for result in results:
