@@ -136,6 +136,12 @@ alias make='bear make'
 #for piping outpit to X clipboard. Obviously only works on systems with X
 alias clipboard="xargs echo -n | xclip -selection clipboard"
 
+# colorizers
+alias ifconfig="grc ifconfig"
+
+# nmap alias
+# alias nmap='sudo nmap -g53 --randomize-hosts --script-args http.useragent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" '
+
 # root@hostname:~$
 # PS1='\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$ '
 
