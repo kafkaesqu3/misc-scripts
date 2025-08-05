@@ -24,7 +24,7 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
 # Constants
-DEFAULT_REGISTRY = "https://registry.example.com"
+DEFAULT_REGISTRY = "http://172.16.35.152:1235/"
 TARGET_PLATFORM = ("linux", "amd64")
 VERIFY_TLS = False
 DEFAULT_PAGE_SIZE = 100
